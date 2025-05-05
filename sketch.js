@@ -45,24 +45,26 @@ function draw() {
   if (hands.length > 0) {
     for (let hand of hands) {
       if (hand.confidence > 0.1) {
-        // Get the position of the index finger (keypoint 8)
-        let indexFinger = hand.keypoints[8].position;
+        // Ensure keypoints[8] exists and has position data
+        if (hand.keypoints[8] && hand.keypoints[8].position) {
+          let indexFinger = hand.keypoints[8].position;
 
-        // Check if the index finger is touching the circle
-        let d = dist(indexFinger.x, indexFinger.y, circleX, circleY);
-        if (d < circleSize / 2) {
-          isDragging = true;
-        } else {
-          isDragging = false;
-        }
+          // Check if the index finger is touching the circle
+          let d = dist(indexFinger.x, indexFinger.y, circleX, circleY);
+          if (d < circleSize / 2) {
+            isDragging = true;
+          } else {
+            isDragging = false;
+          }
 
-        // If dragging, move the circle and draw the trail
-        if (isDragging) {
-          stroke(0, 0, 255); // Blue color for the trail
-          strokeWeight(2);
-          line(circleX, circleY, indexFinger.x, indexFinger.y); // Draw trail
-          circleX = indexFinger.x;
-          circleY = indexFinger.y;
+          // If dragging, move the circle and draw the trail
+          if (isDragging) {
+            stroke(0, 0, 255); // Blue color for the trail
+            strokeWeight(2);
+            line(circleX, circleY, indexFinger.x, indexFinger.y); // Draw trail
+            circleX = indexFinger.x;
+            circleY = indexFinger.y;
+          }
         }
       }
     }
